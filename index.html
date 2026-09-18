@@ -107,13 +107,13 @@
   .step h3 { font-size: 18px; margin-top: 14px; }
   .step p { margin-top: 8px; color: var(--muted); font-size: 15px; }
 
-  /* 기능: 카드 대신 구분선 그리드 */
-  .feat { display: grid; grid-template-columns: 1fr 1fr; margin-top: 36px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
-  .feat > div { padding: 26px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .feat > div:nth-child(2n) { border-right: 0; } .feat > div:nth-last-child(-n+2) { border-bottom: 0; }
-  .feat h3 { font-size: 17px; display: flex; align-items: center; gap: 10px; }
-  .feat p { margin-top: 8px; color: var(--muted); font-size: 15px; }
-  .sw { display: inline-flex; gap: 4px; } .sw i { width: 12px; height: 12px; border-radius: 50%; }
+  /* 기능: 벤토 카드 */
+  .feat { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+  .feat > div { padding: 28px; border-radius: 18px; background: var(--tint); }
+  .feat .ic { width: 44px; height: 44px; border-radius: 12px; background: var(--surface); display: grid; place-items: center; color: var(--ic); box-shadow: 0 1px 2px rgba(20,24,38,.08); }
+  .feat .ic svg { width: 24px; height: 24px; }
+  .feat h3 { font-size: 18px; margin-top: 18px; }
+  .feat p { margin-top: 8px; color: var(--muted); font-size: 15px; max-width: 30em; }
 
   /* FAQ */
   .faq { margin-top: 28px; max-width: 46em; }
@@ -130,7 +130,7 @@
   @media (max-width: 820px) {
     .hero { grid-template-columns: 1fr; gap: 32px; padding-block: 32px 48px; }
     .steps { grid-template-columns: 1fr; gap: 36px; }
-    .feat { grid-template-columns: 1fr; } .feat > div { border-right: 0; } .feat > div:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .feat { grid-template-columns: 1fr; }
     nav a:not(:last-child) { display: none; }
   }
 </style>
@@ -175,7 +175,7 @@
   <section id="demo">
     <div class="eyebrow">시연</div>
     <h2>이렇게 써요</h2>
-    <p class="sub">친구 화면 위로 핑과 댓글이 오가는 6초.</p>
+    <p class="sub">친구 화면 위에 이렇게 찍혀요.</p>
     <div class="video"><video autoplay muted loop playsinline controls preload="auto" src="demo.mp4">브라우저가 동영상을 지원하지 않습니다.</video></div>
 
     <div class="demo2">
@@ -216,10 +216,10 @@
     <div class="eyebrow">기능</div>
     <h2>필요한 것만 넣었어요</h2>
     <div class="feat">
-      <div><h3>핑 휠 <span class="sw"><i style="background:var(--p-red)"></i><i style="background:var(--p-teal)"></i><i style="background:var(--p-blue)"></i><i style="background:var(--p-yellow)"></i></span></h3><p>위험, 갑니다, 도와주세요, 적 사라짐. 롤 휠 그대로라 손이 먼저 움직여요. 누가 찍었는지 이름과 색으로 보이고요.</p></div>
-      <div><h3>댓글 핑</h3><p><kbd>Alt</kbd>+<kbd>T</kbd>로 그 자리에 한 줄. "미니맵 왼쪽 위 봐", "이 줄 왜 이래요?" 말풍선으로 떠요.</p></div>
-      <div><h3>핑 소리</h3><p>종류마다 소리가 달라요. 크기는 각자 슬라이더로, 0이면 무음.</p></div>
-      <div><h3>화면이 달라도 같은 자리</h3><p>핑은 픽셀이 아니라 화면 안의 비율로 가요. 모니터 크기, 창 위치가 달라도 같은 곳에 찍혀요.</p></div>
+      <div style="--tint:#FFF3E9;--ic:#E4483D"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg></div><h3>핑 휠</h3><p>위험, 갑니다, 도와주세요, 적 사라짐. 롤 휠 그대로라 손이 먼저 움직여요. 누가 찍었는지 이름과 색으로 보이고요.</p></div>
+      <div style="--tint:#EEF4FF;--ic:#3B7BEF"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H6a2 2 0 0 1-2-2z"/></svg></div><h3>댓글 핑</h3><p><kbd>Alt</kbd>+<kbd>T</kbd>로 그 자리에 한 줄. "미니맵 왼쪽 위 봐", "이 줄 왜 이래요?" 말풍선으로 떠요.</p></div>
+      <div style="--tint:#FFF8E1;--ic:#C99A16"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" stroke-linecap="round"/></svg></div><h3>핑 소리</h3><p>종류마다 소리가 달라요. 크기는 각자 슬라이더로, 0이면 무음.</p></div>
+      <div style="--tint:#E9F8F4;--ic:#1FB9A0"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="12" height="9" rx="1.5"/><rect x="12" y="10" width="9" height="7" rx="1.5" fill="var(--tint)"/><circle cx="9" cy="9.5" r="1.6" fill="currentColor" stroke="none"/><circle cx="16.5" cy="13.5" r="1.6" fill="currentColor" stroke="none"/></svg></div><h3>화면이 달라도 같은 자리</h3><p>핑은 픽셀이 아니라 화면 안의 비율로 가요. 모니터 크기, 창 위치가 달라도 같은 곳에 찍혀요.</p></div>
     </div>
   </section>
 
