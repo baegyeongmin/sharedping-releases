@@ -31,6 +31,12 @@
   .btn.primary { background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(46,139,232,.28); }
   .btn.ghost { background: var(--surface); border-color: var(--line); color: var(--ink); }
 
+  /* 데모 안내 띠: 페이지 톤과 일부러 다르게 (어두운 바탕, 큰 코드) */
+  .notice { background: #141826; color: #e8e9ec; font-size: 14px; }
+  .notice .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; padding-block: 12px; }
+  .notice .tag { padding: 2px 8px; border-radius: 999px; background: var(--p-red); color: #fff; font: 700 11px/1.6 var(--body); letter-spacing: .06em; }
+  .notice code { padding: 3px 10px; border-radius: 8px; background: #fff; color: #141826; font: 700 16px/1.4 var(--mono); letter-spacing: .12em; }
+
   /* 상단 */
   header.top { display: flex; align-items: center; justify-content: space-between; padding-block: 18px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: 18px; text-decoration: none; }
@@ -169,6 +175,7 @@
 </style>
 </head>
 <body>
+<div class="notice"><div class="wrap"><span class="tag">DEMO</span><span>지금 데모 중이에요. 앱을 켜고 입장 코드 <code>1111</code> 로 들어오면 바로 같이 찍어볼 수 있어요.</span></div></div>
 <div class="wrap">
   <header class="top">
     <a class="logo" href="#"><i></i>SharedPing</a>
