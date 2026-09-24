@@ -47,13 +47,22 @@
   .hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(52px, 10.4vw, 132px); line-height: 1.02; letter-spacing: -.01em; }
   .hero h1 .soft { color: var(--muted); }
   /* "여기." 에 실제 핑이 찍힌다 */
-  .here { position: relative; display: inline-block; }
-  .here::before, .here::after { content: ""; position: absolute; left: 50%; top: 54%; width: .62em; height: .62em; margin: -.31em;
-        border-radius: 50%; border: .045em solid var(--gold); box-shadow: 0 0 .25em rgba(200,170,110,.6); pointer-events: none;
+  .here { --c: var(--gold); position: relative; display: inline-block; }
+  .here::before, .here::after { content: ""; position: absolute; left: calc(50% - .04em); top: 66%; width: .62em; height: .62em; margin: -.31em;
+        border-radius: 50%; border: .045em solid var(--c); box-shadow: 0 0 .25em var(--c); pointer-events: none;
         animation: land 2.6s cubic-bezier(.2,.7,.3,1) infinite; }
   .here::after { animation-delay: .35s; }
+  /* 점 근처에 마우스를 올리면 앱처럼 핑 표시(아이콘 + 이름표)가 뜬다. 올릴 때마다 다음 종류 */
+  .here .pin { position: absolute; left: calc(50% - .04em); top: 66%; width: 0; height: 0; font: 700 .2em/1 var(--body); letter-spacing: 0; }
+  .pin .hit { position: absolute; left: -3.2em; top: -3.2em; width: 6.4em; height: 6.4em; border-radius: 50%; cursor: crosshair; }
+  .pin b { position: absolute; left: -.95em; top: -.95em; width: 1.9em; height: 1.9em; border-radius: 50%; display: grid; place-items: center; pointer-events: none;
+           background: #111214; border: .12em solid var(--c); color: var(--c); box-shadow: 0 0 .6em var(--c); opacity: 0; transform: scale(.3); transition: opacity .15s, transform .2s cubic-bezier(.3,1.6,.5,1); }
+  .pin em { position: absolute; left: 0; top: 1.35em; padding: .2em .7em; border-radius: 999px; background: var(--c); color: #111; font-size: .62em; font-style: normal;
+            white-space: nowrap; pointer-events: none; opacity: 0; transform: translateX(-50%) translateY(-.4em); transition: opacity .15s, transform .2s; }
+  .here:hover .pin b { opacity: 1; transform: none; }
+  .here:hover .pin em { opacity: 1; transform: translateX(-50%); }
   @keyframes land { 0% { transform: scale(.2); opacity: 0 } 10% { opacity: 1 } 60% { transform: scale(2.4); opacity: .15 } 100% { transform: scale(2.8); opacity: 0 } }
-  .hero .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); gap: 56px; align-items: center; margin-top: 40px; }
+  .hero .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 96px; margin-top: 40px; }
   .hero .lead { font-size: 18px; color: var(--soft); max-width: 25em; }
   .hero .lead b { color: var(--ink); font-weight: 600; }
   .dl { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; padding: 14px 22px; border-radius: 10px;
@@ -78,17 +87,20 @@
                 font-size: 12px; color: var(--soft); transition: opacity .3s; }
   .frame.tried .try { opacity: 0; }
 
-  /* 앱이 그리는 핑과 같은 모양 */
+  /* 앱(app/overlay.html)의 핑과 같은 모양·같은 움직임. --c 찍은 사람 색, --t 그 위 글자색, --tc 핑 종류 색 */
   .ping { position: absolute; width: 0; height: 0; pointer-events: none; }
-  .ping i { position: absolute; left: -16px; top: -16px; width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--c);
-            box-shadow: 0 0 12px var(--c), inset 0 0 8px var(--c); animation: ring 1.6s cubic-bezier(.2,.7,.3,1) forwards; }
-  .ping b { position: absolute; left: -13px; top: -13px; width: 26px; height: 26px; border-radius: 50%; background: rgba(0,0,0,.72);
-            border: 2px solid var(--c); color: var(--c); font: 700 14px/22px var(--body); text-align: center; animation: pop 1.9s forwards; }
-  .ping em { position: absolute; left: 0; top: 18px; transform: translateX(-50%); padding: 1px 8px; border-radius: 999px; white-space: nowrap;
-             background: var(--c); color: #111; font: 600 11px/1.6 var(--body); font-style: normal; animation: pop 1.9s forwards; }
-  @keyframes ring { 0% { transform: scale(.3); opacity: 0 } 12% { opacity: 1 } 100% { transform: scale(2.6); opacity: 0 } }
-  @keyframes pop { 0% { transform: scale(0) } 12% { transform: scale(1.15) } 22% { transform: scale(1) } 85% { opacity: 1 } 100% { opacity: 0 } }
-  .ping em { transform-origin: 0 0; }
+  .ping u, .ping i, .ping b { position: absolute; left: 0; top: 0; border-radius: 50%; }
+  .ping u { width: 32px; height: 32px; margin: -16px; background: var(--c); animation: burst .7s ease-out forwards; }
+  .ping i { width: 38px; height: 38px; margin: -19px; border: 3px solid var(--c); box-shadow: 0 0 12px var(--c), inset 0 0 10px var(--c); animation: ring 1.6s cubic-bezier(.2,.7,.3,1) forwards; }
+  .ping i + i { animation-delay: .35s; opacity: 0; }
+  .ping b { width: 32px; height: 32px; margin: -16px; background: rgba(0,0,0,.72); border: 2px solid var(--tc); color: var(--tc);
+            font: 800 17px/28px var(--body); text-align: center; text-shadow: 0 0 8px var(--tc); animation: pop 2s forwards; }
+  .ping em { position: absolute; top: 16px; left: 0; transform: translateX(-50%); padding: 2px 8px; border-radius: 999px; background: var(--c); color: var(--t);
+             font: 600 12px/1.5 var(--body); font-style: normal; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,.45); animation: fade 2s forwards; }
+  @keyframes burst { 0% { transform: scale(.2); opacity: .55 } 100% { transform: scale(2.6); opacity: 0 } }
+  @keyframes ring { 0% { transform: scale(.3); opacity: 1 } 100% { transform: scale(3.4); opacity: 0 } }
+  @keyframes fade { 0%, 65% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes pop { 0% { transform: scale(.4); opacity: 0 } 12% { transform: scale(1.15); opacity: 1 } 20%, 65% { transform: scale(1); opacity: 1 } 100% { opacity: 0 } }
 
   /* ── 섹션 공통: 제목은 크고 짧게, 설명은 옆에 작게 */
   section { padding-block: 104px; border-top: 1px solid var(--line); }
@@ -130,12 +142,16 @@
   .kinds strong { font-weight: 600; }
   .kinds .how { color: var(--muted); font-size: 13px; text-align: right; white-space: nowrap; }
 
-  /* ── 알아둘 것: 문서처럼 */
-  .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
-  .notes div { padding-block: 22px; border-top: 1px solid var(--line); }
-  .notes dt { font-weight: 600; font-size: 17px; }
-  .notes dd { margin: 6px 0 0; color: var(--soft); font-size: 15px; }
-  .notes .warn dt::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); margin-right: 9px; vertical-align: 3px; }
+  /* ── 자주 묻는 것: 눌러서 펼치기 */
+  .notes { max-width: 760px; border-bottom: 1px solid var(--line); }
+  .notes details { border-top: 1px solid var(--line); }
+  .notes summary { display: flex; align-items: center; gap: 10px; padding-block: 18px; font-weight: 600; font-size: 17px; cursor: pointer; list-style: none; }
+  .notes summary::-webkit-details-marker { display: none; }
+  .notes summary::after { content: "+"; margin-left: auto; font: 400 22px/1 var(--mono); color: var(--muted); transition: transform .2s; }
+  .notes details[open] summary::after { transform: rotate(45deg); }
+  .notes summary:hover, .notes details[open] summary { color: #fff; }
+  .notes summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .notes details p { margin: -4px 0 20px; color: var(--soft); font-size: 15px; max-width: 40em; }
 
   /* ── 단축키표 */
   .keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
@@ -152,20 +168,19 @@
   @media (max-width: 880px) {
     .wrap { padding-inline: 16px; }
     .hero { padding-block: 28px 56px; }
-    .hero .row { grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 28px; }
-    .hero .row .frame { order: -1; }
+    .hero .row { gap: 56px; margin-top: 28px; }
     section { padding-block: 72px; }
     .head { grid-template-columns: minmax(0, 1fr); gap: 14px; margin-bottom: 36px; }
     .wheelrow { grid-template-columns: minmax(0, 1fr); gap: 44px; }
     .steps { grid-template-columns: minmax(0, 1fr); gap: 52px; }
-    .notes, .keys { grid-template-columns: minmax(0, 1fr); }
+    .keys { grid-template-columns: minmax(0, 1fr); }
     .kinds .how { display: none; }
   }
   /* 폰에서는 영상 위 표시가 너무 많아진다 */
   @media (max-width: 560px) { .frame .hud { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     .here::before, .here::after { animation: none; opacity: .5; transform: scale(1.8); }
-    .ping i, .ping b, .ping em { animation-duration: .01s; }
+    .ping u, .ping i, .ping b, .ping em { animation-duration: .01s; }
   }
 </style>
 </head>
@@ -177,7 +192,7 @@
   </header>
 
   <div class="hero">
-    <h1><span class="soft">아니 거기 말고,</span><br><span class="here">여기.</span></h1>
+    <h1><span class="soft">아니 거기 말고,</span><br>여기<span class="here">.<span class="pin" aria-hidden="true"><i class="hit"></i><b></b><em></em></span></span></h1>
     <div class="row">
       <div>
         <p class="lead">디스코드로 친구 화면을 같이 볼 때, 그 위에 롤 핑을 찍는 프로그램. 같은 입장 코드로 들어온 사람들 화면에 같은 자리로 뜬다.</p>
@@ -238,10 +253,10 @@
           <p>찍은 사람 닉네임과 색이 같이 뜨고, 종류마다 소리가 다르다. 휠 네 칸의 이름·아이콘·색·소리는 방마다 관리자가 바꿔둘 수 있다.</p>
         </div>
         <ul class="kinds">
-          <li style="--c:var(--red)"><span class="dot">!</span><strong>위험</strong><span class="how">위</span></li>
-          <li style="--c:var(--teal)"><span class="dot">⬇&#xFE0E;</span><strong>갑니다</strong><span class="how">오른쪽</span></li>
-          <li style="--c:var(--blue)"><span class="dot">⚑</span><strong>도와주세요</strong><span class="how">아래</span></li>
-          <li style="--c:var(--yellow)"><span class="dot">?</span><strong>적 사라짐</strong><span class="how">왼쪽</span></li>
+          <li style="--c:var(--red)"><span class="dot">!</span><strong>위험</strong><span class="how"><kbd>Alt</kbd> + 위</span></li>
+          <li style="--c:var(--teal)"><span class="dot">⬇&#xFE0E;</span><strong>갑니다</strong><span class="how"><kbd>Alt</kbd> + 오른쪽</span></li>
+          <li style="--c:var(--blue)"><span class="dot">⚑</span><strong>도와주세요</strong><span class="how"><kbd>Alt</kbd> + 아래</span></li>
+          <li style="--c:var(--yellow)"><span class="dot">?</span><strong>적 사라짐</strong><span class="how"><kbd>Alt</kbd> + 왼쪽</span></li>
           <li style="--c:#ffffff"><span class="dot">·</span><strong>일반핑</strong><span class="how"><kbd>Alt</kbd> + 클릭</span></li>
           <li style="--c:var(--gold)"><span class="dot">T</span><strong>댓글</strong><span class="how"><kbd>Alt</kbd> + <kbd>T</kbd></span></li>
         </ul>
@@ -251,20 +266,15 @@
 
   <section>
     <div class="head">
-      <h2>알아둘 것</h2>
+      <h2>자주 묻는 것</h2>
     </div>
-    <dl class="notes">
-      <div><dt>공유하는 사람은 안 깔아도 된다</dt><dd>보는 사람끼리 쓰는 앱이다. 공유하는 사람도 깔면 친구들 핑이 자기 화면에 뜬다.</dd></div>
-      <div><dt>화면 크기가 달라도 같은 자리</dt><dd>핑 위치는 공유 화면 안의 비율로 보낸다. 모니터나 디스코드 창 크기가 달라도 같은 곳에 뜬다.</dd></div>
-      <div><dt>게임 클릭은 그대로</dt><dd>평소 클릭은 오버레이를 지나 아래 창으로 간다. 게임에서 <kbd>Alt</kbd>를 써야 하면 <kbd>F8</kbd>로 핑 입력만 잠그면 된다. 친구들 핑은 계속 보인다.</dd></div>
-      <div class="warn"><dt>전체화면 게임 위에는 안 뜬다</dt><dd>게임 화면 모드를 '테두리 없음'으로 바꿔야 보인다. 전체화면에서는 게임이 화면을 독차지해서 다른 창이 위에 못 뜬다.</dd></div>
-      <div><dt>누가 보는지, 누구를 숨길지</dt><dd><kbd>F6</kbd>에서 같은 방 사람 목록을 볼 수 있다. 거슬리는 사람은 내 화면에서만 숨길 수 있고, 상대는 모른다.</dd></div>
-      <div><dt>부관리자</dt><dd>방마다 부관리자를 둘 수 있다. 부관리자는 <kbd>F6</kbd> 창에서 도배하는 사람을 10분 동안 내보낼 수 있다.</dd></div>
-      <div><dt>영상은 안 보낸다</dt><dd>서버로 가는 건 핑 종류, 화면 안 위치(비율), 닉네임, 댓글 글자 정도다. 같은 방 사람에게만 전달된다.</dd></div>
-      <div><dt>업데이트는 자동</dt><dd>켜져 있는 동안 새 버전을 받아두고, 앱을 끌 때 설치한다.</dd></div>
-      <div class="warn"><dt>설치할 때 경고가 뜬다</dt><dd>코드 서명 인증서가 없어서 윈도우가 '알 수 없는 게시자'로 표시한다. '추가 정보 → 실행'을 누르면 설치된다.</dd></div>
-      <div class="warn"><dt>Windows 전용</dt><dd>Mac, Linux는 아직 안 된다.</dd></div>
-    </dl>
+    <div class="notes">
+      <details><summary>화면 공유하는 사람도 깔아야 하나?</summary><p>아니다. 보는 사람끼리 쓰는 앱이다. 공유하는 사람도 깔면 친구들 핑이 자기 화면에도 뜬다.</p></details>
+      <details><summary>게임하면서 써도 되나?</summary><p>평소 클릭은 전부 아래 창으로 지나간다. 게임에서 <kbd>Alt</kbd>를 써야 하면 <kbd>F8</kbd>로 내 핑 입력만 잠그면 된다. 다만 전체화면 게임 위에는 안 뜬다. 게임 화면 모드를 '테두리 없음'으로 바꿔야 보인다.</p></details>
+      <details><summary>친구랑 화면 크기가 달라도 같은 자리에 뜨나?</summary><p>뜬다. 핑 위치는 공유 화면 안의 비율로 보내서, 모니터나 디스코드 창 크기가 달라도 같은 곳에 뜬다.</p></details>
+      <details><summary>내 화면이 다른 사람한테 전송되나?</summary><p>안 된다. 서버로 가는 건 핑 종류, 화면 안 위치, 닉네임, 댓글 글자 정도고 같은 방 사람에게만 전달된다.</p></details>
+      <details><summary>설치할 때 경고가 뜨는데?</summary><p>코드 서명 인증서가 없어서 윈도우가 '알 수 없는 게시자'로 표시한다. '추가 정보 → 실행'을 누르면 설치된다. 설치한 뒤 업데이트는 알아서 받는다.</p></details>
+    </div>
   </section>
 
   <section>
@@ -300,22 +310,31 @@
 </div>
 
 <script>
+  const kinds = [['!', '#ff4d4d', '위험'], ['⬇︎', '#2ee6c5', '갑니다'], ['⚑', '#4c8dff', '도와주세요'], ['?', '#ffd23f', '적 사라짐']];
+
+  // 제목의 점 근처에 마우스를 올리면 그 자리에 핑이 뜬다. 올릴 때마다 다음 종류
+  (function () {
+    const here = document.querySelector('.here'), mark = here.querySelector('b'), tag = here.querySelector('em');
+    let n = 0;
+    here.addEventListener('mouseenter', () => {
+      const [icon, color, name] = kinds[n++ % kinds.length];
+      here.style.setProperty('--c', color); mark.textContent = icon; tag.textContent = name + ' · 나';
+    });
+    here.addEventListener('mouseleave', () => here.style.removeProperty('--c'));
+  })();
+
   // 영상 위를 누르면 그 자리에 핑이 찍힌다. 네 종류를 돌아가며.
   (function () {
     const frame = document.getElementById('frame');
-    const kinds = [['!', '#ff4d4d', '위험'], ['⬇︎', '#2ee6c5', '갑니다'], ['⚑', '#4c8dff', '도와주세요'], ['?', '#ffd23f', '적 사라짐']];
     let n = 0;
     frame.addEventListener('pointerdown', (e) => {
       const r = frame.getBoundingClientRect();
       const [icon, color, name] = kinds[n++ % kinds.length];
       const p = document.createElement('span');
       p.className = 'ping';
-      p.style.left = (e.clientX - r.left) + 'px';
-      p.style.top = (e.clientY - r.top) + 'px';
-      p.style.setProperty('--c', color);
-      const ring = document.createElement('i'), mark = document.createElement('b'), tag = document.createElement('em');
-      mark.textContent = icon; tag.textContent = name + ' · 나';
-      p.append(ring, mark, tag);
+      p.style.cssText = 'left:' + (e.clientX - r.left) + 'px; top:' + (e.clientY - r.top) + 'px; --c:#4cc9ff; --t:#111; --tc:' + color; // 나 = 하늘색(앱 기본 색 중 하나)
+      p.innerHTML = '<u></u><i></i><i></i><b></b><em></em>';
+      p.querySelector('b').textContent = icon; p.querySelector('em').textContent = name + ' · 나';
       frame.appendChild(p);
       frame.classList.add('tried');
       setTimeout(() => p.remove(), 2000);
